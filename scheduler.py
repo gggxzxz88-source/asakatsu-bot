@@ -100,7 +100,8 @@ def init_scheduler(app, session_maker, line_bot_api: LineBotApi):
         send_daily_reminder,
         trigger=trigger,
         args=[session_maker, line_bot_api],
-        id='daily_reminder'
+        id='daily_reminder',
+        misfire_grace_time=3600    
     )
 
     weekly_trigger = CronTrigger(
@@ -114,7 +115,8 @@ def init_scheduler(app, session_maker, line_bot_api: LineBotApi):
         send_weekly_summary,
         trigger=weekly_trigger,
         args=[session_maker, line_bot_api],
-        id='weekly_summary'
+        id='weekly_summary',
+        misfire_grace_time=3600
     )
 
     scheduler.start()
