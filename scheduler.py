@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from models import User, Record, Base
 from config import Config
 from linebot import LineBotApi
+from linebot.models import TextSendMessage
 from claude_integration import generate_weekly_summary
 
 def send_daily_reminder(session_maker, line_bot_api: LineBotApi):
@@ -36,10 +37,7 @@ def send_daily_reminder(session_maker, line_bot_api: LineBotApi):
             try:
                 line_bot_api.push_message(
                     user.line_user_id,
-                    {
-                        'type': 'text',
-                        'text': '🌅 おはよう！今日やることは何ですか？'
-                    }
+                    TextSendMessage(text='🌅 おはよう！今日やることは何ですか？')
                 )
             except Exception as e:
                 print(f"Error sending reminder to {user.display_name}: {e}")
@@ -78,10 +76,7 @@ def send_weekly_summary(session_maker, line_bot_api: LineBotApi):
             try:
                 line_bot_api.push_message(
                     user.line_user_id,
-                    {
-                        'type': 'text',
-                        'text': f"📊 今週の振り返り\n\n{summary}"
-                    }
+                    TextSendMessage(text=f"📊 今週の振り返り\n\n{summary}")
                 )
             except Exception as e:
                 print(f"Error sending weekly summary to {user.display_name}: {e}")
